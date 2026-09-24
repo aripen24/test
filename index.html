@@ -1,1 +1,1070 @@
+<!DOCTYPE html>
+<html lang="th" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Video Ad Generator - สร้างวิดีโอ AI โฆษณาอัตโนมัติ</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            900: '#4c1d95',
+                        },
+                        ai: {
+                            purple: '#a855f7',
+                            pink: '#ec4899',
+                            cyan: '#06b6d4',
+                            dark: '#0b0f19',
+                            card: '#161e2e'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Kanit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Kanit', 'Inter', sans-serif;
+            background-color: #0b0f19;
+            color: #f3f4f6;
+        }
+        .glass-panel {
+            background: rgba(22, 30, 46, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gradient-btn {
+            background: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
+            transition: all 0.3s ease;
+        }
+        .gradient-btn:hover {
+            opacity: 0.95;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+            transform: translateY(-1px);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0f19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4b5563;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-purple-500 selection:text-white">
 
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl gradient-btn flex items-center justify-center shadow-lg shadow-purple-900/40">
+                    <i class="fa-solid fa-wand-magic-sparkles text-white text-xl"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                        AdStudio <span class="text-xs px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 font-medium">AI PRO</span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+                <a href="#generator" class="hover:text-purple-400 transition-colors flex items-center gap-1.5"><i class="fa-solid fa-video text-xs"></i> สร้างวิดีโอ</a>
+                <a href="#templates" class="hover:text-purple-400 transition-colors flex items-center gap-1.5"><i class="fa-solid fa-layer-group text-xs"></i> แม่แบบสำเร็จรูป</a>
+                <a href="#my-projects" class="hover:text-purple-400 transition-colors flex items-center gap-1.5"><i class="fa-solid fa-folder-open text-xs"></i> โปรเจกต์ของฉัน</a>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
+                    <i class="fa-solid fa-coins text-amber-400 mr-1.5"></i> เครดิต: <span id="creditCount">120</span>
+                </button>
+                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-xs font-bold text-white shadow">
+                    AI
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+        <!-- Hero Title Banner -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3">
+                สร้างวิดีโอ AI โฆษณา <span class="gradient-text">เปลี่ยนไอเดียเป็นยอดขาย</span>
+            </h1>
+            <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">
+                ระบบปัญญาประดิษฐ์สร้างบทโฆษณา สตอรี่บอร์ด เสียงพากย์ภาษาไทย และตัดต่อวิดีโอพร้อมแสดงผลในไม่กี่วินาที
+            </p>
+        </div>
+
+        <!-- Quick Templates Presets -->
+        <section id="templates" class="mb-8">
+            <div class="flex items-center justify-between mb-3">
+                <h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-bolt text-amber-400"></i> เลือกตัวอย่างสินค้าด่วน (Quick Presets)
+                </h2>
+                <span class="text-xs text-slate-500">คลิกเพื่อเติมข้อมูลอัตโนมัติ</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <button onclick="applyPreset('skincare')" class="p-3 rounded-xl glass-card hover:border-purple-500/50 hover:bg-purple-900/10 text-left transition group">
+                    <div class="flex items-center gap-2 mb-1">
+                        <div class="w-7 h-7 rounded-lg bg-pink-500/20 text-pink-400 flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-pump-soap"></i>
+                        </div>
+                        <span class="font-semibold text-sm text-slate-200">สกินแคร์ / เวชสำอาง</span>
+                    </div>
+                    <p class="text-xs text-slate-400 truncate">Glow Serum เซรั่มหน้าใสฉ่ำวาว</p>
+                </button>
+
+                <button onclick="applyPreset('restaurant')" class="p-3 rounded-xl glass-card hover:border-purple-500/50 hover:bg-purple-900/10 text-left transition group">
+                    <div class="flex items-center gap-2 mb-1">
+                        <div class="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-utensils"></i>
+                        </div>
+                        <span class="font-semibold text-sm text-slate-200">ร้านอาหาร / คาเฟ่</span>
+                    </div>
+                    <p class="text-xs text-slate-400 truncate">ชาบูพรีเมียม หมูคุโรบูตะไม่อั้น</p>
+                </button>
+
+                <button onclick="applyPreset('course')" class="p-3 rounded-xl glass-card hover:border-purple-500/50 hover:bg-purple-900/10 text-left transition group">
+                    <div class="flex items-center gap-2 mb-1">
+                        <div class="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <span class="font-semibold text-sm text-slate-200">คอร์สเรียน / สัมมนา</span>
+                    </div>
+                    <p class="text-xs text-slate-400 truncate">คอร์ส AI Marketing ยิงแอดแม่นยำ</p>
+                </button>
+
+                <button onclick="applyPreset('gadget')" class="p-3 rounded-xl glass-card hover:border-purple-500/50 hover:bg-purple-900/10 text-left transition group">
+                    <div class="flex items-center gap-2 mb-1">
+                        <div class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-headphones"></i>
+                        </div>
+                        <span class="font-semibold text-sm text-slate-200">สินค้าไอที / แก็ดเจ็ต</span>
+                    </div>
+                    <p class="text-xs text-slate-400 truncate">หูฟังไร้สาย ANC ตัดเสียงรบกวน</p>
+                </button>
+            </div>
+        </section>
+
+        <!-- Main Studio Grid -->
+        <div id="generator" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            
+            <!-- Left Panel: Input Controls & Workflow (7 cols) -->
+            <div class="lg:col-span-6 space-y-6">
+                <!-- Workflow Stepper Indicator -->
+                <div class="glass-panel p-4 rounded-2xl">
+                    <div class="flex items-center justify-between text-xs font-medium text-slate-400 relative">
+                        <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-slate-800 -z-0 transform -translate-y-1/2"></div>
+                        
+                        <div id="step-indicator-1" class="flex flex-col items-center gap-1 relative z-10 text-purple-400">
+                            <div class="w-8 h-8 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold text-sm shadow-lg shadow-purple-600/50">1</div>
+                            <span>ตั้งค่าสินค้า</span>
+                        </div>
+                        <div id="step-indicator-2" class="flex flex-col items-center gap-1 relative z-10 text-slate-500">
+                            <div class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 flex items-center justify-center font-bold text-sm border border-slate-700">2</div>
+                            <span>บท & ฉาก (Storyboard)</span>
+                        </div>
+                        <div id="step-indicator-3" class="flex flex-col items-center gap-1 relative z-10 text-slate-500">
+                            <div class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 flex items-center justify-center font-bold text-sm border border-slate-700">3</div>
+                            <span>เรนเดอร์ & Export</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 1 FORM: Input Parameters -->
+                <div id="step-1-content" class="glass-panel p-5 sm:p-6 rounded-2xl space-y-5">
+                    <div class="border-b border-slate-800 pb-3 flex justify-between items-center">
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-sliders text-purple-400"></i> ข้อมูลสินค้าและโฆษณา
+                        </h3>
+                        <span class="text-xs text-purple-400 bg-purple-500/10 px-2 py-1 rounded border border-purple-500/20">ขั้นตอนที่ 1 / 3</span>
+                    </div>
+
+                    <!-- Product Name -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">ชื่อสินค้า / แบรนด์ <span class="text-pink-500">*</span></label>
+                        <input type="text" id="brandName" placeholder="เช่น Glow Skin Aura Serum" 
+                            class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition">
+                    </div>
+
+                    <!-- Target Audience -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">กลุ่มเป้าหมาย (Target Audience)</label>
+                        <input type="text" id="targetAudience" placeholder="เช่น ผู้หญิงวัยทำงาน 22-35 ปี ที่มีปัญหาผิวหมองคล้ำ" 
+                            class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition">
+                    </div>
+
+                    <!-- Selling Points -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">จุดขายสำคัญ / โปรโมชั่น (Key Selling Points)</label>
+                        <textarea id="sellingPoints" rows="2" placeholder="เช่น ผิวกระจ่างใสใน 7 วัน, สารสกัดจากสวิสเซอร์แลนด์, ซื้อ 1 แถม 1 ส่งฟรี" 
+                            class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition resize-none"></textarea>
+                    </div>
+
+                    <!-- Video Style & Tone Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">สไตล์วิดีโอ (Video Style)</label>
+                            <select id="videoStyle" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500 transition">
+                                <option value="ugc">📱 TikTok / UGC รีวิวธรรมชาติ</option>
+                                <option value="commercial">💎 Commercial หรูหราพรีเมียม</option>
+                                <option value="cinematic">🎬 Cinematic เล่าเรื่องลึกซึ้ง</option>
+                                <option value="energetic">🔥 เร้าใจ ป้ายยาด่วน (Energetic)</option>
+                                <option value="explainer">💡 อธิบายคุณประโยชน์ (Explainer)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">เสียงพากย์ AI (Thai AI Voice)</label>
+                            <select id="aiVoice" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500 transition">
+                                <option value="female-energetic">👩 เสียงหญิงไทย (กระตือรือร้น/ป้ายยา)</option>
+                                <option value="female-soft">👩 เสียงหญิงไทย (นุ่มนวล/พรีเมียม)</option>
+                                <option value="male-confident">👨 เสียงชายไทย (มั่นใจ/น่าเชื่อถือ)</option>
+                                <option value="male-casual">👨 เสียงชายไทย (เป็นกันเอง/สบายๆ)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Aspect Ratio & Duration -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">ขนาดหน้าจอ (Aspect Ratio)</label>
+                            <div class="grid grid-cols-3 gap-2" id="aspectRatioGroup">
+                                <button type="button" onclick="selectAspectRatio('9:16')" id="ratio-9-16" class="aspect-btn active p-2 rounded-lg bg-purple-900/40 border border-purple-500 text-purple-300 flex flex-col items-center justify-center gap-1 text-xs font-medium">
+                                    <i class="fa-solid fa-mobile-screen"></i> 9:16 Vertical
+                                </button>
+                                <button type="button" onclick="selectAspectRatio('16:9')" id="ratio-16-9" class="aspect-btn p-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-400 flex flex-col items-center justify-center gap-1 text-xs font-medium hover:border-slate-600">
+                                    <i class="fa-solid fa-tv"></i> 16:9 Landscape
+                                </button>
+                                <button type="button" onclick="selectAspectRatio('1:1')" id="ratio-1-1" class="aspect-btn p-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-400 flex flex-col items-center justify-center gap-1 text-xs font-medium hover:border-slate-600">
+                                    <i class="fa-solid fa-square"></i> 1:1 Square
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1.5">ความยาววิดีโอ (Duration)</label>
+                            <div class="grid grid-cols-3 gap-2" id="durationGroup">
+                                <button type="button" onclick="selectDuration(15)" id="dur-15" class="dur-btn active p-2 rounded-lg bg-purple-900/40 border border-purple-500 text-purple-300 text-xs font-medium text-center">
+                                    15 วินาที
+                                </button>
+                                <button type="button" onclick="selectDuration(30)" id="dur-30" class="dur-btn p-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-400 text-xs font-medium text-center hover:border-slate-600">
+                                    30 วินาที
+                                </button>
+                                <button type="button" onclick="selectDuration(45)" id="dur-45" class="dur-btn p-2 rounded-lg bg-slate-800 border border-slate-700 text-slate-400 text-xs font-medium text-center hover:border-slate-600">
+                                    45 วินาที
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BGM Choice -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1.5">สไตล์เพลงประกอบ (Background Music)</label>
+                        <select id="bgmStyle" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-purple-500 transition">
+                            <option value="upbeat">🎵 Upbeat & Trendy (เหมาะกับ TikTok/Reels)</option>
+                            <option value="lofi">🎧 Chill Lofi & Chillhop (ฟังเพลิน ผ่อนคลาย)</option>
+                            <option value="luxury">🎻 Elegant Cinematic (หรูหรา ภูมิฐาน)</option>
+                            <option value="electronic">⚡ Synthwave / Modern Electronic (ทันสมัย ไอที)</option>
+                        </select>
+                    </div>
+
+                    <button onclick="generateAIScript()" class="w-full py-3.5 px-4 rounded-xl gradient-btn text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-purple-900/30">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> สร้างบทและสตอรี่บอร์ดด้วย AI
+                    </button>
+                </div>
+
+                <!-- STEP 2 FORM: Script & Storyboard Visual Builder (Hidden by default) -->
+                <div id="step-2-content" class="glass-panel p-5 sm:p-6 rounded-2xl space-y-4 hidden">
+                    <div class="border-b border-slate-800 pb-3 flex justify-between items-center">
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-film text-pink-400"></i> ปรับแต่งฉากและบทโฆษณา (Storyboard)
+                        </h3>
+                        <span class="text-xs text-pink-400 bg-pink-500/10 px-2 py-1 rounded border border-pink-500/20">ขั้นตอนที่ 2 / 3</span>
+                    </div>
+
+                    <p class="text-xs text-slate-400">คุณสามารถแก้ไขข้อความ พาดหัวฉาก หรือเอฟเฟกต์ภาพสำหรับแต่ละฉากได้ด่านล่าง:</p>
+
+                    <!-- Scenes Container -->
+                    <div id="scenesList" class="space-y-3 max-h-[380px] overflow-y-auto pr-1">
+                        <!-- Dynamic scene cards will be inserted here -->
+                    </div>
+
+                    <div class="flex items-center justify-between pt-2">
+                        <button onclick="addNewScene()" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700 transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-plus text-purple-400"></i> เพิ่มฉากใหม่
+                        </button>
+                        <button onclick="copyGeneratedScript()" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700 transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-copy text-pink-400"></i> คัดลอกบทพากย์
+                        </button>
+                    </div>
+
+                    <div class="flex gap-3 pt-3">
+                        <button onclick="goToStep(1)" class="w-1/3 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm transition">
+                            <i class="fa-solid fa-arrow-left mr-1"></i> ย้อนกลับ
+                        </button>
+                        <button onclick="startRenderingProcess()" class="w-2/3 py-3 rounded-xl gradient-btn text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-lg">
+                            <i class="fa-solid fa-clapperboard"></i> ยืนยัน & เริ่มเรนเดอร์วิดีโอ
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 3 FORM: Rendering Progress & Export (Hidden by default) -->
+                <div id="step-3-content" class="glass-panel p-5 sm:p-6 rounded-2xl space-y-5 hidden">
+                    <div class="border-b border-slate-800 pb-3 flex justify-between items-center">
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-gears text-purple-400"></i> กำลังประมวลผลเรนเดอร์วิดีโอ AI
+                        </h3>
+                        <span class="text-xs text-purple-400 bg-purple-500/10 px-2 py-1 rounded border border-purple-500/20">ขั้นตอนที่ 3 / 3</span>
+                    </div>
+
+                    <!-- Progress Bar Component -->
+                    <div class="space-y-2 py-2">
+                        <div class="flex justify-between text-xs font-medium">
+                            <span id="renderStatusText" class="text-purple-300 flex items-center gap-2">
+                                <i class="fa-solid fa-circle-notch fa-spin"></i> กำลังสังเคราะห์เสียงพากย์ภาษาไทย...
+                            </span>
+                            <span id="renderPercent" class="text-slate-400">35%</span>
+                        </div>
+                        <div class="w-full h-3 bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-700">
+                            <div id="renderProgressBar" class="h-full bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 rounded-full transition-all duration-300" style="width: 35%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Render Tasks Checklist -->
+                    <div class="bg-slate-900/60 rounded-xl p-3.5 space-y-2 border border-slate-800/80 text-xs">
+                        <div id="task-1" class="flex items-center gap-2 text-emerald-400">
+                            <i class="fa-solid fa-circle-check"></i> สร้างโครงสร้าง Storyboard และ Motion Graphics
+                        </div>
+                        <div id="task-2" class="flex items-center gap-2 text-purple-300">
+                            <i class="fa-solid fa-spinner fa-spin"></i> สังเคราะห์เสียงพากย์ AI Thai Neural Voice
+                        </div>
+                        <div id="task-3" class="flex items-center gap-2 text-slate-500">
+                            <i class="fa-regular fa-circle"></i> รวมแทร็กเสียงดนตรีประกอบ & SFX
+                        </div>
+                        <div id="task-4" class="flex items-center gap-2 text-slate-500">
+                            <i class="fa-regular fa-circle"></i> ทำคำบรรยายอัตโนมัติ (Auto-Captions)
+                        </div>
+                    </div>
+
+                    <div id="renderCompleteNotice" class="hidden p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-start gap-2.5">
+                        <i class="fa-solid fa-circle-check text-base text-emerald-400 mt-0.5"></i>
+                        <div>
+                            <span class="font-bold block">สร้างวิดีโอสำเร็จพร้อมใช้งาน!</span>
+                            คุณสามารถรับชมตัวอย่าง เคลียร์หรือแก้ไขย้อนหลัง และดาวน์โหลดไฟล์ MP4 ได้ทางแผงวิดีโอด้านขวา
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3">
+                        <button onclick="goToStep(2)" class="w-1/2 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs transition">
+                            <i class="fa-solid fa-pen mr-1"></i> แก้ไขบท/ฉาก
+                        </button>
+                        <button id="resetAppBtn" onclick="goToStep(1)" class="w-1/2 py-2.5 rounded-xl bg-purple-900/30 hover:bg-purple-900/50 text-purple-300 border border-purple-500/30 font-semibold text-xs transition">
+                            <i class="fa-solid fa-rotate-left mr-1"></i> สร้างวิดีโอใหม่
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Interactive Video Preview Player (5 cols) -->
+            <div class="lg:col-span-6 flex flex-col items-center">
+                <div class="glass-panel p-4 sm:p-5 rounded-2xl w-full sticky top-20">
+                    <div class="flex items-center justify-between mb-3 border-b border-slate-800 pb-2">
+                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-play-circle text-pink-500"></i> ตัวอย่างวิดีโอ (Interactive Preview Player)
+                        </h3>
+                        <span id="badgeAspectRatio" class="text-xs font-mono bg-slate-800 px-2 py-0.5 rounded text-slate-300 border border-slate-700">9:16</span>
+                    </div>
+
+                    <!-- Canvas Video Player Mock Container -->
+                    <div class="relative bg-slate-950 rounded-xl overflow-hidden shadow-2xl border border-slate-800 flex items-center justify-center min-h-[360px] max-h-[520px] w-full group">
+                        
+                        <!-- Dynamic Canvas Element -->
+                        <canvas id="videoCanvas" class="max-h-[500px] w-auto max-w-full object-contain cursor-pointer" onclick="togglePlay()"></canvas>
+
+                        <!-- Audio Visualizer Overlay Bar -->
+                        <div class="absolute bottom-12 left-4 right-4 h-6 flex items-end justify-center gap-1 opacity-75 pointer-events-none">
+                            <div class="w-1 bg-pink-500/80 rounded-t animate-pulse h-3"></div>
+                            <div class="w-1 bg-purple-500/80 rounded-t animate-pulse h-5" style="animation-delay: 0.1s"></div>
+                            <div class="w-1 bg-indigo-500/80 rounded-t animate-pulse h-2" style="animation-delay: 0.2s"></div>
+                            <div class="w-1 bg-pink-500/80 rounded-t animate-pulse h-6" style="animation-delay: 0.15s"></div>
+                            <div class="w-1 bg-purple-500/80 rounded-t animate-pulse h-4" style="animation-delay: 0.3s"></div>
+                        </div>
+
+                        <!-- Canvas Center Play Button Overlay -->
+                        <button id="centerPlayBtn" onclick="togglePlay()" class="absolute w-14 h-14 rounded-full bg-purple-600/80 hover:bg-purple-600 text-white flex items-center justify-center text-xl backdrop-blur transition-transform transform scale-100 active:scale-95 shadow-xl">
+                            <i class="fa-solid fa-play ml-1"></i>
+                        </button>
+                    </div>
+
+                    <!-- Video Controls Toolbar -->
+                    <div class="mt-3 space-y-2">
+                        <!-- Progress slider -->
+                        <div class="flex items-center gap-3 text-xs text-slate-400 font-mono">
+                            <span id="currentTimeText">00:00</span>
+                            <input type="range" id="videoSeeker" value="0" min="0" max="100" class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-purple-500" oninput="seekVideo(this.value)">
+                            <span id="totalTimeText">00:15</span>
+                        </div>
+
+                        <div class="flex items-center justify-between pt-1">
+                            <div class="flex items-center gap-2">
+                                <button onclick="togglePlay()" id="playPauseBtn" class="p-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-sm transition">
+                                    <i class="fa-solid fa-play"></i>
+                                </button>
+                                <button onclick="restartVideo()" class="p-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm transition">
+                                    <i class="fa-solid fa-rotate-left"></i>
+                                </button>
+                                <button onclick="toggleMute()" id="muteBtn" class="p-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm transition">
+                                    <i class="fa-solid fa-volume-high"></i>
+                                </button>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <button onclick="downloadScriptFile()" class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition flex items-center gap-1.5 border border-slate-700">
+                                    <i class="fa-solid fa-file-lines text-purple-400"></i> ดาวน์โหลดสคริปต์
+                                </button>
+                                <button onclick="simulateExportMP4()" class="px-3 py-2 rounded-lg gradient-btn text-white text-xs font-semibold transition flex items-center gap-1.5 shadow">
+                                    <i class="fa-solid fa-download"></i> ส่งออก MP4
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Notification Toast Modal -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="glass-panel px-4 py-3 rounded-xl border border-purple-500/40 text-white text-sm flex items-center gap-3 shadow-2xl">
+            <div id="toastIcon" class="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-300 flex items-center justify-center">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <span id="toastMsg">ดำเนินการสำเร็จ</span>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/80 mt-12 py-6 text-center text-slate-500 text-xs">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <p>© 2026 AdStudio AI. เครื่องมือสร้างวิดีโอโฆษณาด้วยระบบปัญญาประดิษฐ์</p>
+            <div class="flex gap-4">
+                <a href="#" class="hover:text-slate-400">เงื่อนไขการใช้งาน</a>
+                <a href="#" class="hover:text-slate-400">นโยบายความเป็นส่วนตัว</a>
+                <a href="#" class="hover:text-slate-400">ช่วยเหลือ & API</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // App State
+        let currentStep = 1;
+        let selectedAspectRatio = '9:16';
+        let selectedDuration = 15;
+        let isPlaying = false;
+        let isMuted = false;
+        let currentSceneIndex = 0;
+        let animationFrameId = null;
+        let playbackProgress = 0; // 0 to 100
+        let audioCtx = null;
+
+        // Sample Presets Data
+        const presets = {
+            skincare: {
+                brand: "Glow Skin Aura Serum",
+                target: "ผู้หญิงวัย 22-35 ปี ปัญหาผิวหมองคล้ำและจุดด่างดำ",
+                sellingPoints: "สารสกัดสวิสเซอร์แลนด์ ผิวกระจ่างใสใน 7 วัน โปรซื้อ 1 แถม 1",
+                style: "ugc",
+                voice: "female-energetic",
+                bgm: "upbeat"
+            },
+            restaurant: {
+                brand: "Kurobuta Shabu Premium",
+                target: "สายกิน Buffet ชาบู ครอบครัวและแก๊งเพื่อน",
+                sellingPoints: "บุฟเฟต์หมูคุโรบูตะไม่อั้น ซุปหมาล่าสูตรเข้มข้น ลด 20% เมื่อมา 4 ท่าน",
+                style: "energetic",
+                voice: "female-energetic",
+                bgm: "upbeat"
+            },
+            course: {
+                brand: "คอร์ส AI Video Marketing 2026",
+                target: "พ่อค้าแม่ค้าออนไลน์ และ Marketer ที่ต้องการเพิ่มยอดขาย",
+                sellingPoints: "เรียนจบสร้างโฆษณาได้ใน 10 นาที สอนจับมือทำ ไม่ต้องมีพื้นฐาน",
+                style: "explainer",
+                voice: "male-confident",
+                bgm: "electronic"
+            },
+            gadget: {
+                brand: "SoundClear ANC Earbuds Pro",
+                target: "คนทำงาน Hybrid และสายฟังเพลง ชอบความเป็นส่วนตัว",
+                sellingPoints: "ระบบตัดเสียงรบกวน 45dB แบตเตอรี่ใช้นาน 30 ชม. กันน้ำ IPX7",
+                style: "commercial",
+                voice: "male-casual",
+                bgm: "lofi"
+            }
+        };
+
+        // Generated Scenes Data Model
+        let generatedScenes = [];
+
+        window.onload = function() {
+            // Initial Preset load
+            applyPreset('skincare');
+            // Canvas Initialize
+            initCanvasPlayer();
+            // Window Resize handler for canvas
+            window.addEventListener('resize', resizeCanvas);
+        };
+
+        function applyPreset(key) {
+            const data = presets[key];
+            if(!data) return;
+
+            document.getElementById('brandName').value = data.brand;
+            document.getElementById('targetAudience').value = data.target;
+            document.getElementById('sellingPoints').value = data.sellingPoints;
+            document.getElementById('videoStyle').value = data.style;
+            document.getElementById('aiVoice').value = data.voice;
+            document.getElementById('bgmStyle').value = data.bgm;
+
+            showToast("โหลดข้อมูลตัวอย่างสำเร็จแล้ว!");
+        }
+
+        function selectAspectRatio(ratio) {
+            selectedAspectRatio = ratio;
+            document.querySelectorAll('.aspect-btn').forEach(btn => {
+                btn.classList.remove('bg-purple-900/40', 'border-purple-500', 'text-purple-300');
+                btn.classList.add('bg-slate-800', 'border-slate-700', 'text-slate-400');
+            });
+
+            const targetId = ratio === '9:16' ? 'ratio-9-16' : (ratio === '16:9' ? 'ratio-16-9' : 'ratio-1-1');
+            const targetBtn = document.getElementById(targetId);
+            if(targetBtn) {
+                targetBtn.classList.remove('bg-slate-800', 'border-slate-700', 'text-slate-400');
+                targetBtn.classList.add('bg-purple-900/40', 'border-purple-500', 'text-purple-300');
+            }
+
+            document.getElementById('badgeAspectRatio').innerText = ratio;
+            resizeCanvas();
+        }
+
+        function selectDuration(seconds) {
+            selectedDuration = seconds;
+            document.querySelectorAll('.dur-btn').forEach(btn => {
+                btn.classList.remove('bg-purple-900/40', 'border-purple-500', 'text-purple-300');
+                btn.classList.add('bg-slate-800', 'border-slate-700', 'text-slate-400');
+            });
+
+            const targetBtn = document.getElementById(`dur-${seconds}`);
+            if(targetBtn) {
+                targetBtn.classList.remove('bg-slate-800', 'border-slate-700', 'text-slate-400');
+                targetBtn.classList.add('bg-purple-900/40', 'border-purple-500', 'text-purple-300');
+            }
+
+            document.getElementById('totalTimeText').innerText = `00:${seconds < 10 ? '0'+seconds : seconds}`;
+        }
+
+        function goToStep(step) {
+            currentStep = step;
+            
+            // Hide all contents
+            document.getElementById('step-1-content').classList.add('hidden');
+            document.getElementById('step-2-content').classList.add('hidden');
+            document.getElementById('step-3-content').classList.add('hidden');
+
+            // Reset Indicator Styles
+            for(let i=1; i<=3; i++) {
+                const el = document.getElementById(`step-indicator-${i}`);
+                const circle = el.querySelector('div');
+                circle.className = "w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all";
+                if(i < step) {
+                    circle.classList.add('bg-emerald-600', 'text-white');
+                    circle.innerHTML = `<i class="fa-solid fa-check text-xs"></i>`;
+                    el.className = "flex flex-col items-center gap-1 relative z-10 text-emerald-400";
+                } else if(i === step) {
+                    circle.classList.add('bg-purple-600', 'text-white', 'shadow-lg', 'shadow-purple-600/50');
+                    circle.innerText = i;
+                    el.className = "flex flex-col items-center gap-1 relative z-10 text-purple-400";
+                } else {
+                    circle.classList.add('bg-slate-800', 'text-slate-300', 'border', 'border-slate-700');
+                    circle.innerText = i;
+                    el.className = "flex flex-col items-center gap-1 relative z-10 text-slate-500";
+                }
+            }
+
+            // Show selected step content
+            document.getElementById(`step-${step}-content`).classList.remove('hidden');
+        }
+
+        function generateAIScript() {
+            const brand = document.getElementById('brandName').value.trim();
+            const target = document.getElementById('targetAudience').value.trim();
+            const points = document.getElementById('sellingPoints').value.trim();
+
+            if(!brand) {
+                showToast("กรุณากรอกชื่อสินค้า/แบรนด์", "error");
+                return;
+            }
+
+            showToast("กำลังประมวลผลบทโฆษณาด้วย AI...");
+
+            // Dynamic Scene Generation Logic based on user inputs
+            generatedScenes = [
+                {
+                    title: "ฉากที่ 1: Hook เปิดตัวดึงดูดสายตา",
+                    visual: `ภาพเคลื่อนไหวซูมเร็วของ ${brand} พร้อมแสงออร่าเปล่งประกาย`,
+                    caption: `หยุดดูตรงนี้ก่อน! อยากได้ไอเทมเด็ดใช่ไหม?`,
+                    voiceover: `เคยเจอปัญหาเดิมๆ หรือเปล่า? ขอแนะนำ ${brand} ตอบโจทย์คุณ!`,
+                    bgStyle: "#7c3aed"
+                },
+                {
+                    title: "ฉากที่ 2: เจาะลึกปัญหาและวิธีแก้ปัญหา",
+                    visual: `เปรียบเทียบผลลัพธ์ และโชว์จุดเด่น ${points.split(',')[0] || 'นวัตกรรมล่าสุด'}`,
+                    caption: `เคล็ดลับสำคัญ: ${points.split(',')[0] || 'เห็นผลชัดเจน'}`,
+                    voiceover: `ด้วยส่วนผสมและคุณสมบัติพิเศษ ช่วยแก้ปัญหาได้ตรงจุด ชัดเจนในเวลาอันเร็ว`,
+                    bgStyle: "#db2777"
+                },
+                {
+                    title: "ฉากที่ 3: โปรโมชั่นและ Call To Action (CTA)",
+                    visual: `ตัวเลขส่วนลดและข้อเสนอพิเศษพุ่งขึ้นมาบนหน้าจอ`,
+                    caption: `${points.split(',')[1] || 'โปรโมชั่นพิเศษวันนี้'} - คลิกเลย!`,
+                    voiceover: `โปรโมชั่นพิเศษ! ${points.split(',')[1] || 'สั่งซื้อวันนี้รับส่วนลดทันที'} กดปุ่มด้านล่างเลย!`,
+                    bgStyle: "#2563eb"
+                }
+            ];
+
+            renderScenesList();
+            goToStep(2);
+            restartVideo();
+        }
+
+        function renderScenesList() {
+            const container = document.getElementById('scenesList');
+            container.innerHTML = "";
+
+            generatedScenes.forEach((scene, idx) => {
+                const item = document.createElement('div');
+                item.className = "p-3.5 rounded-xl glass-card space-y-2 border border-slate-700/60";
+                item.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold text-purple-300 flex items-center gap-1.5">
+                            <i class="fa-solid fa-clapperboard text-xs"></i> ${scene.title}
+                        </span>
+                        <button onclick="deleteScene(${idx})" class="text-slate-500 hover:text-pink-400 text-xs p-1">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-slate-400 font-medium block mb-0.5">ภาพฉากและวิชวล (Visual Description)</label>
+                        <input type="text" value="${scene.visual}" onchange="updateScene(${idx}, 'visual', this.value)"
+                            class="w-full bg-slate-900/90 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-200">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-slate-400 font-medium block mb-0.5">ข้อความพาดหัวซ้อนวิดีโอ (Text Overlay Caption)</label>
+                        <input type="text" value="${scene.caption}" onchange="updateScene(${idx}, 'caption', this.value)"
+                            class="w-full bg-slate-900/90 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-amber-300 font-medium">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-slate-400 font-medium block mb-0.5">บทพากย์เสียง AI (Voiceover Script)</label>
+                        <textarea rows="1" onchange="updateScene(${idx}, 'voiceover', this.value)"
+                            class="w-full bg-slate-900/90 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 resize-none">${scene.voiceover}</textarea>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function updateScene(idx, field, val) {
+            if(generatedScenes[idx]) {
+                generatedScenes[idx][field] = val;
+            }
+        }
+
+        function addNewScene() {
+            generatedScenes.push({
+                title: `ฉากที่ ${generatedScenes.length + 1}: เพิ่มเติม`,
+                visual: "ภาพบรรยากาศสินค้าและรีวิวความประทับใจ",
+                caption: "การันตีคุณภาพ 100%",
+                voiceover: "สั่งซื้อตอนนี้ บริการจัดส่งฟรีทั่วประเทศ!",
+                bgStyle: "#059669"
+            });
+            renderScenesList();
+            showToast("เพิ่มฉากใหม่เรียบร้อยแล้ว");
+        }
+
+        function deleteScene(idx) {
+            if(generatedScenes.length <= 1) {
+                showToast("ต้องมีอย่างน้อย 1 ฉากในวิดีโอ", "error");
+                return;
+            }
+            generatedScenes.splice(idx, 1);
+            renderScenesList();
+        }
+
+        function startRenderingProcess() {
+            goToStep(3);
+            let progress = 0;
+            const progressBar = document.getElementById('renderProgressBar');
+            const percentText = document.getElementById('renderPercent');
+            const statusText = document.getElementById('renderStatusText');
+
+            document.getElementById('renderCompleteNotice').classList.add('hidden');
+
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 12) + 5;
+                if(progress > 100) progress = 100;
+
+                progressBar.style.width = `${progress}%`;
+                percentText.innerText = `${progress}%`;
+
+                if(progress > 30 && progress < 60) {
+                    statusText.innerText = "กำลังประมวลผลวิดีโอและกราฟิกเคลื่อนไหว...";
+                    document.getElementById('task-2').className = "flex items-center gap-2 text-emerald-400";
+                    document.getElementById('task-2').querySelector('i').className = "fa-solid fa-circle-check";
+                    document.getElementById('task-3').className = "flex items-center gap-2 text-purple-300";
+                    document.getElementById('task-3').querySelector('i').className = "fa-solid fa-spinner fa-spin";
+                } else if(progress >= 60 && progress < 90) {
+                    statusText.innerText = "กำลังซิงค์จังหวะดนตรีประกอบและข้อความป๊อปอัป...";
+                    document.getElementById('task-3').className = "flex items-center gap-2 text-emerald-400";
+                    document.getElementById('task-3').querySelector('i').className = "fa-solid fa-circle-check";
+                    document.getElementById('task-4').className = "flex items-center gap-2 text-purple-300";
+                    document.getElementById('task-4').querySelector('i').className = "fa-solid fa-spinner fa-spin";
+                } else if(progress >= 100) {
+                    clearInterval(interval);
+                    statusText.innerText = "การเรนเดอร์เสร็จสมบูรณ์!";
+                    document.getElementById('task-4').className = "flex items-center gap-2 text-emerald-400";
+                    document.getElementById('task-4').querySelector('i').className = "fa-solid fa-circle-check";
+                    document.getElementById('renderCompleteNotice').classList.remove('hidden');
+                    showToast("เรนเดอร์วิดีโอ AI สำเร็จแล้ว!");
+                    restartVideo();
+                    togglePlay();
+                }
+            }, 300);
+        }
+
+        let canvas, ctx;
+
+        function initCanvasPlayer() {
+            canvas = document.getElementById('videoCanvas');
+            ctx = canvas.getContext('2d');
+            resizeCanvas();
+            renderCanvasFrame();
+        }
+
+        function resizeCanvas() {
+            if(!canvas) return;
+            // Set internal dimensions based on Aspect Ratio selection
+            if(selectedAspectRatio === '9:16') {
+                canvas.width = 360;
+                canvas.height = 640;
+            } else if(selectedAspectRatio === '16:9') {
+                canvas.width = 640;
+                canvas.height = 360;
+            } else {
+                canvas.width = 500;
+                canvas.height = 500;
+            }
+            renderCanvasFrame();
+        }
+
+        // Render Frame Loop on Canvas
+        function renderCanvasFrame() {
+            if(!ctx) return;
+
+            const width = canvas.width;
+            const height = canvas.height;
+
+            // Background Dynamic Gradient
+            const activeScene = generatedScenes[currentSceneIndex] || {
+                caption: "ตัวอย่างวิดีโอ AI โฆษณา",
+                visual: "ภาพเคลื่อนไหวจำลองสินค้า",
+                voiceover: "",
+                bgStyle: "#7c3aed"
+            };
+
+            const grad = ctx.createLinearGradient(0, 0, width, height);
+            grad.addColorStop(0, '#0f172a');
+            grad.addColorStop(0.5, activeScene.bgStyle || '#6d28d9');
+            grad.addColorStop(1, '#020617');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, width, height);
+
+            // Animated Visual Elements in Background
+            const time = Date.now() * 0.002;
+            ctx.fillStyle = "rgba(255, 255, 255, 0.08)";
+            for(let i=0; i<5; i++) {
+                const x = (Math.sin(time + i) * 0.5 + 0.5) * width;
+                const y = (Math.cos(time * 0.8 + i) * 0.5 + 0.5) * height;
+                const r = 40 + Math.sin(time + i) * 20;
+                ctx.beginPath();
+                ctx.arc(x, y, r, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Visual Graphic Placeholder Object
+            ctx.save();
+            ctx.translate(width / 2, height / 2 - 20);
+            ctx.rotate(Math.sin(time) * 0.05);
+
+            // Mock Product Card Container
+            ctx.fillStyle = "rgba(255, 255, 255, 0.15)";
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
+            ctx.lineWidth = 2;
+            const boxW = width * 0.6;
+            const boxH = height * 0.35;
+            ctx.beginPath();
+            ctx.roundRect(-boxW/2, -boxH/2, boxW, boxH, 16);
+            ctx.fill();
+            ctx.stroke();
+
+            // Icon inside box
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 32px Inter, sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText("✨ AI VIDEO", 0, -10);
+
+            ctx.font = "12px Kanit, sans-serif";
+            ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+            ctx.fillText(activeScene.visual.substring(0, 30) + "...", 0, 25);
+            ctx.restore();
+
+            // Text Overlay Caption (Animated Kinetic Text)
+            ctx.save();
+            ctx.fillStyle = "#facc15"; // Yellow accent caption
+            ctx.font = `bold ${Math.max(16, Math.floor(width * 0.05))}px Kanit, sans-serif`;
+            ctx.textAlign = "center";
+            ctx.shadowColor = "rgba(0,0,0,0.8)";
+            ctx.shadowBlur = 10;
+            
+            const captionY = height * 0.82;
+            ctx.fillText(activeScene.caption, width / 2, captionY);
+            ctx.restore();
+
+            // Brand Watermark
+            const brandName = document.getElementById('brandName').value || "AdStudio AI";
+            ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
+            ctx.font = "12px Kanit, sans-serif";
+            ctx.textAlign = "left";
+            ctx.fillText(`PROMOTED BY: ${brandName.toUpperCase()}`, 16, 28);
+        }
+
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const btn = document.getElementById('playPauseBtn');
+            const centerBtn = document.getElementById('centerPlayBtn');
+
+            if(isPlaying) {
+                btn.innerHTML = `<i class="fa-solid fa-pause"></i>`;
+                centerBtn.classList.add('opacity-0', 'pointer-events-none');
+                playSynthesizedAudioBeep();
+                animatePlayback();
+            } else {
+                btn.innerHTML = `<i class="fa-solid fa-play"></i>`;
+                centerBtn.classList.remove('opacity-0', 'pointer-events-none');
+                if(animationFrameId) cancelAnimationFrame(animationFrameId);
+            }
+        }
+
+        function animatePlayback() {
+            if(!isPlaying) return;
+
+            playbackProgress += 0.25; // Speed increment
+            if(playbackProgress > 100) {
+                playbackProgress = 0;
+            }
+
+            // Sync Scene index with progress
+            if(generatedScenes.length > 0) {
+                const sceneDuration = 100 / generatedScenes.length;
+                currentSceneIndex = Math.min(
+                    Math.floor(playbackProgress / sceneDuration),
+                    generatedScenes.length - 1
+                );
+            }
+
+            // Update Seeker
+            document.getElementById('videoSeeker').value = playbackProgress;
+            
+            // Format time string
+            const currentSec = Math.floor((playbackProgress / 100) * selectedDuration);
+            document.getElementById('currentTimeText').innerText = `00:${currentSec < 10 ? '0'+currentSec : currentSec}`;
+
+            renderCanvasFrame();
+
+            animationFrameId = requestAnimationFrame(animatePlayback);
+        }
+
+        function restartVideo() {
+            isPlaying = false;
+            playbackProgress = 0;
+            currentSceneIndex = 0;
+            document.getElementById('videoSeeker').value = 0;
+            document.getElementById('currentTimeText').innerText = "00:00";
+            document.getElementById('playPauseBtn').innerHTML = `<i class="fa-solid fa-play"></i>`;
+            document.getElementById('centerPlayBtn').classList.remove('opacity-0', 'pointer-events-none');
+            if(animationFrameId) cancelAnimationFrame(animationFrameId);
+            renderCanvasFrame();
+        }
+
+        function seekVideo(val) {
+            playbackProgress = parseFloat(val);
+            if(generatedScenes.length > 0) {
+                const sceneDuration = 100 / generatedScenes.length;
+                currentSceneIndex = Math.min(
+                    Math.floor(playbackProgress / sceneDuration),
+                    generatedScenes.length - 1
+                );
+            }
+            const currentSec = Math.floor((playbackProgress / 100) * selectedDuration);
+            document.getElementById('currentTimeText').innerText = `00:${currentSec < 10 ? '0'+currentSec : currentSec}`;
+            renderCanvasFrame();
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            const btn = document.getElementById('muteBtn');
+            if(isMuted) {
+                btn.innerHTML = `<i class="fa-solid fa-volume-xmark text-pink-400"></i>`;
+                showToast("ปิดเสียงแล้ว");
+            } else {
+                btn.innerHTML = `<i class="fa-solid fa-volume-high"></i>`;
+                showToast("เปิดเสียงแล้ว");
+            }
+        }
+
+        // Web Audio API Synth Beep for audio feedback when playing
+        function playSynthesizedAudioBeep() {
+            if(isMuted) return;
+            try {
+                if(!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            } catch(e) {
+                // Audio Context fallback silent handle
+            }
+        }
+
+        function copyGeneratedScript() {
+            if(generatedScenes.length === 0) {
+                showToast("ไม่พบข้อมูลสคริปต์", "error");
+                return;
+            }
+
+            let fullText = `=== บทวิดีโอโฆษณา AI (${document.getElementById('brandName').value}) ===\n\n`;
+            generatedScenes.forEach((s, idx) => {
+                fullText += `[ฉากที่ ${idx+1}]\n- สภาพภาพ: ${s.visual}\n- ข้อความหน้าจอ: ${s.caption}\n- บทพากย์: ${s.voiceover}\n\n`;
+            });
+
+            // Clipboard Copy
+            const tempInput = document.createElement("textarea");
+            tempInput.value = fullText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            showToast("คัดลอกบทโฆษณาลง คลิปบอร์ด แล้ว!");
+        }
+
+        function downloadScriptFile() {
+            if(generatedScenes.length === 0) {
+                showToast("กรุณาสร้างสคริปต์ก่อนดาวน์โหลด", "error");
+                return;
+            }
+
+            let textContent = `บทวิดีโอโฆษณา AI - ${document.getElementById('brandName').value}\n`;
+            textContent += `สร้างเมื่อ: ${new Date().toLocaleString('th-TH')}\n`;
+            textContent += `--------------------------------------------------\n\n`;
+
+            generatedScenes.forEach((s, i) => {
+                textContent += `ฉากที่ ${i+1}: ${s.title}\n`;
+                textContent += `วิชวล: ${s.visual}\n`;
+                textContent += `ข้อความซ้อน: ${s.caption}\n`;
+                textContent += `เสียงพากย์: ${s.voiceover}\n\n`;
+            });
+
+            const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `AdScript_${document.getElementById('brandName').value || 'AI'}.txt`;
+            link.click();
+            showToast("ดาวน์โหลดไฟล์บทโฆษณาเรียบร้อย");
+        }
+
+        function simulateExportMP4() {
+            showToast("กำลังเตรียมดาวน์โหลดไฟล์วิดีโอ MP4 HD...");
+            setTimeout(() => {
+                showToast("ระบบจำลองส่งออก MP4 สำเร็จ!");
+            }, 1500);
+        }
+
+        function showToast(msg, type = "success") {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMsg.innerText = msg;
+            if(type === "error") {
+                toastIcon.className = "w-7 h-7 rounded-lg bg-pink-500/20 text-pink-400 flex items-center justify-center";
+                toastIcon.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i>`;
+            } else {
+                toastIcon.className = "w-7 h-7 rounded-lg bg-purple-500/20 text-purple-300 flex items-center justify-center";
+                toastIcon.innerHTML = `<i class="fa-solid fa-check"></i>`;
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
